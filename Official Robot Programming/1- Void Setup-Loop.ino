@@ -1,9 +1,9 @@
 
 /*----------------------------------------------------------------------------
- * Oficial championsship Programming (Settings, function -> void setup and loop) 
+ * Official championsship Programming (Settings, function -> void setup and loop) 
  * ---------------------------------------------------------------------------
  * $Author Roboson Vincius Amorim Silva
- * $Date 2016-07 (July 2015) $
+ * $Date 2016-08 (July 2015) $
  * ---------------------------------------------------------------------------
  */
 

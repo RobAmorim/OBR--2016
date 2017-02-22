@@ -18,8 +18,8 @@ void setup() {
   Serial.println("Ready");
 }
 
-void AGRead() {
-  Wire.beginTransmission(MPU_addr);
+void AGRead() {  //Readind Gyro sensor 
+  Wire.beginTransmission(MPU_addr); 
   Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
   Wire.endTransmission(false);
   Wire.requestFrom(MPU_addr,14,true);  // request a total of 14 registers
@@ -33,7 +33,7 @@ void AGRead() {
   Degrees();
 }
 
-void Degrees() {
+void Degrees() {  // Map of values 
   ACDegreesX = map(AcX, minAC, maxAC, -90, 90);
   ACDegreesY = map(AcY, minAC, maxAC, -90 , 90);
   ACDegreesZ = map(AcZ, minAC, maxAC, -90 , 90);
@@ -43,8 +43,8 @@ void Degrees() {
 }
 
 void loop(){
-  AGRead();
-  
+  AGRead(); 
+    //Print values readed 
   Serial.print("AcX = "); Serial.print(ACDegreesX);
   Serial.print(" | AcY = "); Serial.print(ACDegreesX);
   Serial.print(" | AcZ = "); Serial.print(ACDegreesZ);

@@ -3,17 +3,16 @@
 #include <Gaussian.h>
 #include <GaussianAverage.h>
 
-GaussianAverage myMovingAverage(10); //Minha média móvel
+GaussianAverage myMovingAverage(10); //My movieng average 
   
-//Pinos de conexao do modulo TCS230 
-#define Pino_s0 22 
-#define Pino_s1 23  
-#define Pino_s2 24  
-#define Pino_s3 25  
-#define Pino_out A14 
+
+#define Pin_s1 23   //Conection Pins of color sensor 
+#define Pin_s2 24  
+#define Pin_s3 25  
+#define Pin_out A14 
 
  
-int green = 0;  
+int green = 0;  // variable to store the value coming from the color sensor 
 
     
 void setup()  
@@ -21,16 +20,16 @@ void setup()
 
 {  
   
-  pinMode(Pino_s0, OUTPUT);  //PINOS DO SENSOR DE COR 
-  pinMode(Pino_s1, OUTPUT);  
-  pinMode(Pino_s2, OUTPUT);  
-  pinMode(Pino_s3, OUTPUT);  
-  pinMode(Pino_out, INPUT);  
+  pinMode(Pin_s0, OUTPUT);  //pins Setting of color sensor 
+  pinMode(Pin_s1, OUTPUT);  
+  pinMode(Pin_s2, OUTPUT);  
+  pinMode(Pin_s3, OUTPUT);  
+  pinMode(Pin_out, INPUT);  
 
   Serial.begin(9600);  
   //============================================================================   
-  digitalWrite(Pino_s0, HIGH);  //CONDIÇÃO DE FREQUÊNCIA DO SENSOR DE COR DIREITO
-  digitalWrite(Pino_s1, LOW);
+  digitalWrite(Pin_s0, HIGH);  // frequency Setting of color sensor 
+  digitalWrite(Pin_s1, LOW);
   //============================================================================
  
 
@@ -39,16 +38,16 @@ void setup()
     
 void loop() 
 {  
-  color(); //Chama a rotina que le as cores  
+  color(); //Reading Color Sensors  
   
-  //Mostra no serial monitor os valores detectados  
+  //to Show values readed 
  //=================================================================================
-  Serial.print(" Valor Cor Normal : ");  //PRINTA O VALOR NORMal IDO PELO SENSOR 
+  Serial.print(" Valor Cor Normal : ");  //Print values of color sensor 
   Serial.print(green, DEC);  
  //================================================================================ 
  Serial.print('\t'); 
  //=====================================================================================
-  Serial.print(" Valor Cor Filtrada : ");  //PRINTA O VALOR FILTRADO LIDO PELO SENSOR 
+  Serial.print(" Valor Cor Filtrada : ");  //Print values of color sensor - Movieng averange 
   Serial.println(myMovingAverage.mean, DEC); 
 
  //==============================================================================================
@@ -58,8 +57,7 @@ void loop()
     
 void color()  
 {  
-  //Rotina que le o valor das cores  
-  
+  //Reading color sensors 
  digitalWrite(Pino_s2, HIGH);  // CONDIÇÃO QUE ACIONA OS FOTOTRANSISTORS PARA VERDE DO DIREITO
  digitalWrite(Pino_s3, HIGH);   
 //===============================

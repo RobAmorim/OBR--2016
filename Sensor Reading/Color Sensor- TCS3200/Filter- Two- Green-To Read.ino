@@ -1,26 +1,35 @@
+/*----------------------------------------------------------------------------
+ * Color Sensor - TCS3200 - FILTER COLOR GREEN 
+ * ---------------------------------------------------------------------------
+ * $Author Roboson Vincius Amorim Silva
+ * $Date 2016-08 (July 2016) $
+ * ---------------------------------------------------------------------------
+ */
+//=================================================
+
+
 #include <LinkedList.h>
 #include <Gaussian.h>
 #include <GaussianAverage.h>
 
-GaussianAverage Dir_MyMovingAverage(10); //Minha média móvel
-GaussianAverage Esq_MyMovingAverage(10); //Minha média móvel
+GaussianAverage Right_MyMovingAverage(10); //Moving average 
+GaussianAverage Left_MyMovingAverage(10); //Moving average   
    
-//Pinos de conexao do modulo TCS230 DIREITO 
-#define Dir_s0  22 
-#define Dir_s1  23  
-#define Dir_s2 24  
-#define Dir_s3  25  
-#define Dir_out  A14
-//Pinos de conexao do modulo TCS230 ESQUERDO 
-#define Esq_s0  26 
+
+#define Right_s0  22  //Pins -> Connections of color right sensor
+#define Right_s1  23  
+#define Right_s2 24  
+#define Right_s3  25  
+#define Right_out  A14
+
+#define Esq_s0  26  //Pins -> Connections of color left sensor 
 #define Esq_s1  27  
 #define Esq_s2 28
 #define Esq_s3  29 
 #define Esq_out  A15
-//Variaveis que armazenam o valor das cores  
 
-int Dir_green = 0;  
-int Esq_green = 0;  
+int Right_green = 0;  // variable to store the value coming from the RIGHT sensor
+int Left_green = 0;  // variable to store the value coming from the left sensor
 
     
 void setup()  
@@ -28,73 +37,73 @@ void setup()
 
 {  
   
-  pinMode(Dir_s0, OUTPUT);  //PINOS DO SENSOR DE COR DA DIREITA
-  pinMode(Dir_s1, OUTPUT);  
-  pinMode(Dir_s2, OUTPUT);  
-  pinMode(Dir_s3, OUTPUT);  
-  pinMode(Dir_out, INPUT);  
+  pinMode(Right_s0, OUTPUT);  //Pins -> setting of color right sensor 
+  pinMode(Right_s1, OUTPUT);  
+  pinMode(Right_s2, OUTPUT);  
+  pinMode(Right_s3, OUTPUT);  
+  pinMode(Right_out, INPUT);  
 //================================================================
-  pinMode(Esq_s0, OUTPUT);  //PINOS DO SENSOR DE COR DA ESQUERDA  
-  pinMode(Esq_s1, OUTPUT);  
-  pinMode(Esq_s2, OUTPUT);  
-  pinMode(Esq_s3, OUTPUT);  
-  pinMode(Esq_out, INPUT);  
+  pinMode(Left_s0, OUTPUT);  //Pins -> setting of color left sensor   
+  pinMode(Left_s1, OUTPUT);  
+  pinMode(Left_s2, OUTPUT);  
+  pinMode(Left_s3, OUTPUT);  
+  pinMode(Left_out, INPUT);  
  
   Serial.begin(9600);  
   //============================================================================   
-  digitalWrite(Dir_s0, HIGH);  //CONDIÇÃO DE FREQUÊNCIA DO SENSOR DE COR DIREITO
-  digitalWrite(Dir_s1, LOW);
+  digitalWrite(Right_s0, HIGH);  //sensor frequency - Right 
+  digitalWrite(Right_s1, LOW);
   //============================================================================
-  digitalWrite(Esq_s0, HIGH);  //CONDIÇÃO DE FREQUÊNCIA DO SENSOR DE COR ESQUERDO
-  digitalWrite(Esq_s1, LOW);
+  digitalWrite(Left_s0, HIGH);   //sensor frequency - Left  
+  digitalWrite(Left_s1, LOW);
 
   
 }  
     
 void loop() 
 {  
-  color(); //Chama a rotina que le as cores  
+  color(); //Reading Color Sensor 
   
-  //Mostra no serial monitor os valores detectados  
+  //Serial print Values 
  //=================================================================================
-  Serial.print(" Verde Dir Normal : ");  //PRINTA O VALOR LIDO PELO SENSOR DE COR DIREITO
-  Serial.print(Dir_green, DEC);  
+  Serial.print(" Verde Dir Normal : ");  //Print of values - Color Sensor -Right 
+  Serial.print(Right_green, DEC);  
  //===========================================================================================
  Serial.print('\t');
  //==========================================================================================
-  Serial.print(" Verde Dir Filtrado: ");  //PRINTA O VALOR LIDO PELO SENSOR DE COR DIREITO
- Serial.print(Dir_MyMovingAverage.mean, DEC);
+  Serial.print(" Verde Dir Filtrado: ");  //Print of values - Color Sensor -Right- Moving average 
+ Serial.print(Right_MyMovingAverage.mean, DEC);
   //===========================================================================================
   Serial.print('\t');
   //===========================================================================================
-  Serial.print("  Verde Esq Normal: ");   //PRINTA O VALOR LIDO PELO SENSOR DE COR ESQUERDO 
-  Serial.println(Esq_green, DEC);  
+  Serial.print("  Verde Esq Normal: ");    //Print of values - Color Sensor - Left
+  Serial.println(Left_green, DEC);  
   //=================================================================================
-  Serial.print(" Verde Esq Filtrado: ");  //PRINTA O VALOR LIDO PELO SENSOR DE COR DIREITO
-  Serial.print(Esq_MyMovingAverage.mean, DEC);
+  Serial.print(" Verde Esq Filtrado: "); //Print of values - Color Sensor -  Left - Moving average 
+  Serial.print(Left_MyMovingAverage.mean, DEC);
   
   delay(200); 
  }  
     
 void color()  
 {  
-  //Rotina que le o valor das cores  
+  //Reading Color Sensors 
   
- digitalWrite(Dir_s2, HIGH);  // CONDIÇÃO QUE ACIONA OS FOTOTRANSISTORS PARA VERDE DO DIREITO
- digitalWrite(Dir_s3, HIGH);   
+ digitalWrite(Right_s2, HIGH);  // CONDIÇÃO QUE ACIONA OS FOTOTRANSISTORS PARA VERDE DO DIREITO
+ digitalWrite(Right_s3, HIGH);   
 //===============================
- digitalWrite(Esq_s2, HIGH);  // CONDIÇÃO QUE ACIONA OS FOTOTRANSISTORS PARA VERDE DO ESQUERDO
- digitalWrite(Esq_s3, HIGH);
+ digitalWrite(Left_s2, HIGH);  // CONDIÇÃO QUE ACIONA OS FOTOTRANSISTORS PARA VERDE DO ESQUERDO
+ digitalWrite(Left_s3, HIGH);
    
  //count OUT, pGreen, GREEN  
  
-  Dir_green = pulseIn(Dir_out, digitalRead(Dir_out) == HIGH ? LOW : HIGH); 
-  Esq_green = pulseIn(Esq_out, digitalRead(Esq_out) == HIGH ? LOW : HIGH);  
+  Right_green = pulseIn(Right_out, digitalRead(Right_out) == HIGH ? LOW : HIGH); 
+  Left_green = pulseIn(Left_out, digitalRead(Left_out) == HIGH ? LOW : HIGH);  
 
-  Dir_MyMovingAverage +=  Dir_green;
-  Esq_MyMovingAverage += Esq_green;
+  Right_MyMovingAverage +=  Right_green;
+  Left_MyMovingAverage += Left_green;
   
-  Dir_MyMovingAverage.process();
-  Esq_MyMovingAverage.process();
+  Right_MyMovingAverage.process();
+  Left_MyMovingAverage.process();
 }
 

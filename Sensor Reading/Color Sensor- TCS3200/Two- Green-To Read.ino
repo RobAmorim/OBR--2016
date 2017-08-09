@@ -85,7 +85,7 @@ void color()
    
  //count OUT, pGreen, GREEN  
  
-  Right_green = pulseIn(Right_out, digitalRead(Right_out) == HIGH ? LOW : HIGH); 
-  Left_green = pulseIn(Left_out, digitalRead(Left_out) == HIGH ? LOW : HIGH);   
+  Right_green = pulseIn(Right_out, digitalRead(Right_out) == HIGH ? LOW : HIGH, 5000); 
+  Left_green = pulseIn(Left_out, digitalRead(Left_out) == HIGH ? LOW : HIGH, 5000);   
 }
 
